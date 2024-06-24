@@ -1,13 +1,25 @@
-from pydantic import BaseModel, EmailStr
-from typing import Optional
+from datetime import datetime
 from bson import ObjectId
+from pydantic import BaseModel, EmailStr
 
 class User(BaseModel):
-    id: Optional[ObjectId]
-    name: str
+    id: ObjectId
     first_name: str
+    last_name: str
     email: EmailStr
+    password_hash: str
     phone: str
+    created_at: datetime
+    updated_at: datetime
+    roles: list[str]
+
+class UserCreate(BaseModel):
+    first_name: str
+    last_name: str
+    email: EmailStr
     password: str
-    user_id: str
-    role: str  # "owner" or "collaborator"
+    phone: str
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str

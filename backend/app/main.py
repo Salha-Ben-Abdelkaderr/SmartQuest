@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import auth, studies, forms, collaborators, messages, data_entries, dashboard, audit
+from routers import auth, studies, forms, collaborators, messages, data_entries, dashboard, audit
 
 app = FastAPI()
 
@@ -15,7 +15,3 @@ app.include_router(audit.router)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to SmartQuest API"}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=8000)

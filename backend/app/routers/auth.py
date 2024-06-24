@@ -1,9 +1,9 @@
-from backend.app.services.auth_service import get_password_hash
+from services.auth_service import get_password_hash
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from app.models.user import User
-from app.schemas.user_schema import UserCreate, UserOut
-from app.utils.security import verify_password, create_access_token
+from models.user import User
+from schemas.user_schema import UserCreate, UserOut
+from utils.security import verify_password, create_access_token
 from app.utils.db import db
 
 router = APIRouter(prefix="/auth", tags=["auth"])
