@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 from bson import ObjectId
-from app.utils.db import db
+from app.utils.database import db
 from app.models.study import Form
 
 def create_form(study_id: str, form: Form):

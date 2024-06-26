@@ -5,7 +5,7 @@ from bson import ObjectId
 class Message(BaseModel):
     id: Optional[ObjectId]
     sender_id: ObjectId
-    recipient_id: ObjectId
+    receiver_id: ObjectId
     study_id: ObjectId
     message: str
     timestamp: str

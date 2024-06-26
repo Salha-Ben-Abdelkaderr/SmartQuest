@@ -1,22 +1,17 @@
-from passlib.context import CryptContext
-from jose import JWTError, jwt
-from datetime import datetime, timedelta
+from fastapi import HTTPException
+from bson import ObjectId
+from app.utils.db import db
+from app.utils.security import get_password_hash
+from app.models.user import User
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+def create_user(user_data: dict):
+    user_data["password"] = get_password_hash(user_data["password"])
+    result = db.users.insert_one(user_data)
+    created_user = db.users.find_one({"_id": result.inserted_id})
+    return created_user
 
-SECRET_KEY = "_5wbM1gnVfxez6DUt1vqEfjnf1X_g-uGUnSkIOKj2pU"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-def create_access_token(data: dict):
-    to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+def get_user_by_email(email: str):
+    user = db.users.find_one({"email": email})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user

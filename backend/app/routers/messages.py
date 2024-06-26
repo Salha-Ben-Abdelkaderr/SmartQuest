@@ -1,14 +1,14 @@
+from typing import List
 from fastapi import APIRouter, HTTPException, Depends
-from app.services.collaborator_service import add_collaborator, remove_collaborator
-from app.models.study import Collaborator
-from app.schemas.study_schema import CollaboratorCreate, CollaboratorOut
+from app.services.message_service import send_message, get_messages
+from app.schemas.message_schema import MessageCreate, MessageOut
 
-router = APIRouter(prefix="/collaborators", tags=["collaborators"])
+router = APIRouter(prefix="/messages", tags=["messages"])
 
-@router.post("/{study_id}", response_model=CollaboratorOut)
-def add(study_id: str, collaborator: CollaboratorCreate):
-    return add_collaborator(study_id, collaborator)
+@router.post("/", response_model=MessageOut)
+def send(message: MessageCreate):
+    return send_message(message)
 
-@router.delete("/{study_id}/{collaborator_id}", response_model=CollaboratorOut)
-def remove(study_id: str, collaborator_id: str):
-    return remove_collaborator(study_id, collaborator_id)
+@router.get("/{study_id}", response_model=List[MessageOut])
+def read(study_id: str):
+    return get_messages(study_id)

@@ -1,11 +1,23 @@
-{
-    "_id": "ObjectId",
-    "first_name": "string",
-    "last_name": "string",
-    "email": "string",
-    "password_hash": "string",
-    "phone": "string",
-    "created_at": "date",
-    "updated_at": "date",
-    "roles": ["string"]
-}
+from datetime import datetime
+from pydantic import BaseModel, EmailStr
+
+class UserCreate(BaseModel):
+    first_name: str
+    last_name: str
+    email: EmailStr
+    password: str
+    phone: str
+
+class UserOut(BaseModel):
+    id: str
+    first_name: str
+    last_name: str
+    email: EmailStr
+    phone: str
+    roles: str
+    created_at: datetime
+    updated_at: datetime
+    
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
